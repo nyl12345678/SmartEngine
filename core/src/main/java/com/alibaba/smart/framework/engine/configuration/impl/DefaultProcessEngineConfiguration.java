@@ -1,36 +1,24 @@
 package com.alibaba.smart.framework.engine.configuration.impl;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ExecutorService;
-
 import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.bpmn.constant.BpmnNameSpaceConstant;
 import com.alibaba.smart.framework.engine.common.expression.evaluator.ExpressionEvaluator;
 import com.alibaba.smart.framework.engine.common.expression.evaluator.MvelExpressionEvaluator;
 import com.alibaba.smart.framework.engine.common.util.MapUtil;
-import com.alibaba.smart.framework.engine.configuration.ConfigurationOption;
-import com.alibaba.smart.framework.engine.configuration.DelegationExecutor;
-import com.alibaba.smart.framework.engine.configuration.ExceptionProcessor;
-import com.alibaba.smart.framework.engine.configuration.IdGenerator;
-import com.alibaba.smart.framework.engine.configuration.InstanceAccessor;
-import com.alibaba.smart.framework.engine.configuration.ListenerExecutor;
-import com.alibaba.smart.framework.engine.configuration.LockStrategy;
-import com.alibaba.smart.framework.engine.configuration.MultiInstanceCounter;
-import com.alibaba.smart.framework.engine.configuration.OptionContainer;
-import com.alibaba.smart.framework.engine.configuration.ParallelServiceOrchestration;
-import com.alibaba.smart.framework.engine.configuration.ProcessEngineConfiguration;
-import com.alibaba.smart.framework.engine.configuration.TableSchemaStrategy;
-import com.alibaba.smart.framework.engine.configuration.TaskAssigneeDispatcher;
-import com.alibaba.smart.framework.engine.configuration.VariablePersister;
+import com.alibaba.smart.framework.engine.configuration.*;
 import com.alibaba.smart.framework.engine.configuration.impl.option.DefaultOptionContainer;
 import com.alibaba.smart.framework.engine.configuration.scanner.AnnotationScanner;
 import com.alibaba.smart.framework.engine.constant.SmartBase;
 import com.alibaba.smart.framework.engine.extension.scanner.SimpleAnnotationScanner;
-
 import lombok.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
 
 /**
  * @author 高海军 帝奇  2016.11.11
@@ -79,6 +67,8 @@ public class DefaultProcessEngineConfiguration implements ProcessEngineConfigura
 
     private Map<String,Object> magicExtension;
 
+    private ScriptEngine scriptEngine;
+
     public DefaultProcessEngineConfiguration() {
         //说明:先默认设置一个id生成器,业务使用方可以根据自己的需要再覆盖掉这个值。
         this.idGenerator = new DefaultIdGenerator();
@@ -93,9 +83,11 @@ public class DefaultProcessEngineConfiguration implements ProcessEngineConfigura
         this.tableSchemaStrategy = new DefaultTableSchemaStrategy();
         this.optionContainer = new DefaultOptionContainer();
         optionContainer.put(ConfigurationOption.EXPRESSION_COMPILE_RESULT_CACHED_OPTION);
+        this.scriptEngine = new ScriptEngineManager().getEngineByName("js");
 
         buildDefaultSupportNameSpace();
     }
+
 
     private void buildDefaultSupportNameSpace() {
         Map<String,Object> magicExtension = MapUtil.newHashMap();

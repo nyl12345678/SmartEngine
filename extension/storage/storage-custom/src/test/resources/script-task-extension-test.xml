@@ -1,0 +1,17 @@
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:smart="http://smartengine.org/schema/process" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" targetNamespace="smart" id="aa">
+
+    <process id="script-process">
+
+    <startEvent id="start" />
+    <sequenceFlow id="flow1" sourceRef="start" targetRef="someTask" />
+
+    <scriptTask id="someTask" name="Script Task" scriptFormat="javaScript">
+        <script>
+            print("Hello,World!")
+        </script>
+    </scriptTask>
+    <sequenceFlow id="flow2" sourceRef="someTask" targetRef="end" />
+
+    <endEvent id="end" />
+    </process>
+</definitions>

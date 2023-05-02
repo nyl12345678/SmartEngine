@@ -1,12 +1,13 @@
 package com.alibaba.smart.framework.engine.configuration;
 
-import java.util.Map;
-import java.util.concurrent.ExecutorService;
-
 import com.alibaba.smart.framework.engine.SmartEngine;
 import com.alibaba.smart.framework.engine.annoation.Experiment;
 import com.alibaba.smart.framework.engine.common.expression.evaluator.ExpressionEvaluator;
 import com.alibaba.smart.framework.engine.configuration.scanner.AnnotationScanner;
+
+import javax.script.ScriptEngine;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
 
 /**
  * @author 高海军 帝奇  2016.11.11
@@ -158,7 +159,7 @@ public interface ProcessEngineConfiguration {
      * 一般使用场景下，直接忽略该配置即可
      * @param extension
      */
-    void setMagicExtension(Map<String,Object> extension);
+    void setMagicExtension(Map<String, Object> extension);
 
     Map<String,Object> getMagicExtension();
 
@@ -166,5 +167,7 @@ public interface ProcessEngineConfiguration {
     //void setPersisterStrategy(PersisterStrategy persisterStrategy);
     //
     //PersisterStrategy getPersisterStrategy();
+
+    ScriptEngine getScriptEngine();
 }
 
